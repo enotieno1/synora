@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synora AI - Next-Generation DeFi with ChatGPT Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        .synora-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+        .ai-gradient {
+            background: linear-gradient(135deg, #10a37f 0%, #10a37f 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10a37f;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        .chat-message {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .synora-logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(16, 163, 127, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-8 h-8 synora-gradient rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900 synora-logo">Synora</span>
+                        <div class="ml-4 flex items-center bg-green-100 px-3 py-1 rounded-full">
+                            <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                                <span class="text-white text-xs font-bold">AI</span>
+                            </div>
+                            <span class="text-green-800 text-xs font-medium">Powered by ChatGPT</span>
+                        </div>
+                    </div>
+                    <nav class="hidden md:flex space-x-8 ml-10">
+                        <a href="#dashboard" class="nav-link px-3 py-2 text-sm font-medium text-gray-500">Dashboard</a>
+                        <a href="#ai-assistant" class="nav-link px-3 py-2 text-sm font-medium text-green-600 border-b-2 border-green-600">AI Assistant</a>
+                        <a href="#banking" class="nav-link px-3 py-2 text-sm font-medium text-gray-500">Banking</a>
+                        <a href="#security" class="nav-link px-3 py-2 text-sm font-medium text-gray-500">Security</a>
+                        <a href="#analytics" class="nav-link px-3 py-2 text-sm font-medium text-gray-500">Analytics</a>
+                        <a href="#governance" class="nav-link px-3 py-2 text-sm font-medium text-gray-500">Governance</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- AI Status Indicator -->
+                    <div class="flex items-center space-x-1 bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 bg-green-500 rounded-full pulse"></span>
+                        <span class="text-sm font-medium">AI Active</span>
+                    </div>
+                    <button id="connectWallet" class="synora-gradient hover:opacity-90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-opacity">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center fade-in">
+                <div class="flex justify-center items-center mb-6">
+                    <div class="w-16 h-16 synora-gradient rounded-xl flex items-center justify-center mr-4">
+                        <span class="text-white font-bold text-2xl">S</span>
+                    </div>
+                    <div class="w-16 h-16 ai-gradient rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-2xl">AI</span>
+                    </div>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 synora-logo">
+                    Synora AI
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-blue-100">
+                    Intelligent DeFi Platform Powered by ChatGPT
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                        Try AI Assistant
+                    </button>
+                    <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- AI Assistant Section -->
+        <section id="ai-assistant" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">AI</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Synora AI Assistant</h3>
+                            <p class="text-sm text-gray-500">Powered by ChatGPT - Your personal DeFi expert</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Online
+                        </span>
+                        <button onclick="clearChat()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="border border-gray-200 rounded-lg h-96 overflow-y-auto mb-4 p-4 bg-gray-50" id="chatContainer">
+                    <div class="space-y-4">
+                        <!-- AI Welcome Message -->
+                        <div class="flex items-start space-x-3 chat-message">
+                            <div class="w-8 h-8 ai-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-xs font-bold">AI</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg shadow-sm max-w-md">
+                                <p class="text-sm text-gray-800">
+                                    Hello! I'm your Synora AI Assistant, powered by ChatGPT. I can help you with:
+                                </p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                    <li>• Portfolio analysis and optimization</li>
+                                    <li>• Risk assessment and security insights</li>
+                                    <li>• Market trends and investment advice</li>
+                                    <li>• DeFi strategy and best practices</li>
+                                </ul>
+                                <p class="text-sm text-gray-800 mt-2">
+                                    How can I assist you today?
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Sample User Message -->
+                        <div class="flex items-start space-x-3 chat-message justify-end">
+                            <div class="bg-blue-600 text-white p-3 rounded-lg shadow-sm max-w-md">
+                                <p class="text-sm">
+                                    What's the current risk level of my portfolio?
+                                </p>
+                            </div>
+                            <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-gray-600 text-xs font-bold">You</span>
+                            </div>
+                        </div>
+
+                        <!-- AI Response -->
+                        <div class="flex items-start space-x-3 chat-message">
+                            <div class="w-8 h-8 ai-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-xs font-bold">AI</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg shadow-sm max-w-md">
+                                <p class="text-sm text-gray-800 mb-2">
+                                    Based on your current portfolio analysis:
+                                </p>
+                                <div class="bg-green-50 p-3 rounded-lg mb-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-green-800">Risk Score: 250</span>
+                                        <span class="text-xs text-green-600">Low Risk</span>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600">
+                                    Your portfolio shows healthy diversification with 65% in stable assets (USDC) and 35% in growth assets (SYN). The risk score of 250 indicates a conservative, well-balanced approach.
+                                </p>
+                                <p class="text-sm text-gray-800 mt-2">
+                                    <strong>Recommendations:</strong>
+                                </p>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• Consider increasing SYN allocation to 40% for higher returns</li>
+                                    <li>• Monitor market conditions for optimal entry points</li>
+                                    <li>• Your current strategy aligns well with risk-averse goals</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="flex items-center space-x-3">
+                    <input 
+                        type="text" 
+                        id="chatInput"
+                        placeholder="Ask me anything about DeFi, your portfolio, or market analysis..."
+                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        onkeypress="handleChatInput(event)"
+                    >
+                    <button 
+                        onclick="sendMessage()"
+                        class="ai-gradient hover:opacity-90 text-white px-6 py-3 rounded-lg font-medium transition-opacity"
+                    >
+                        Send
+                    </button>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <button onclick="quickQuestion('Analyze my portfolio')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        Analyze my portfolio
+                    </button>
+                    <button onclick="quickQuestion('What are the current market trends?')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        Market trends
+                    </button>
+                    <button onclick="quickQuestion('How can I optimize my staking strategy?')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        Optimize staking
+                    </button>
+                    <button onclick="quickQuestion('Explain current security risks')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        Security risks
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Features Grid -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">AI-Powered Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white text-xl">📊</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Portfolio Analysis</h3>
+                    <p class="text-sm text-gray-600">AI-driven portfolio optimization and risk assessment</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white text-xl">🔍</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Market Insights</h3>
+                    <p class="text-sm text-gray-600">Real-time market analysis and trend predictions</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white text-xl">🛡️</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Security Intelligence</h3>
+                    <p class="text-sm text-gray-600">Advanced fraud detection and threat analysis</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white text-xl">💡</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Smart Advice</h3>
+                    <p class="text-sm text-gray-600">Personalized DeFi strategy and recommendations</p>
+                </div>
+            </div>
+        </section>
+
+                    <!-- Dashboard Section with AI Insights and Fraud Detection -->
+        <section id="dashboard" class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">AI-Enhanced Dashboard</h1>
+                    <p class="text-sm text-gray-500">Portfolio overview with AI-powered insights and fraud detection</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="flex items-center bg-green-100 px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 bg-green-500 rounded-full pulse"></span>
+                        <span class="text-green-800 text-sm font-medium">AI Insights Active</span>
+                    </div>
+                    <div class="flex items-center bg-red-100 px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 bg-red-500 rounded-full pulse"></span>
+                        <span class="text-red-800 text-sm font-medium">Fraud Detection ON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Stats with AI Recommendations -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 text-xl">💰</span>
+                        </div>
+                        <span class="text-green-600 text-sm font-medium">+12.5%</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Net Worth</p>
+                        <p class="text-2xl font-bold text-gray-900">$45,234.56</p>
+                        <p class="text-xs text-green-600 mt-1">AI: Optimal performance</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-green-600 text-xl">📈</span>
+                        </div>
+                        <span class="text-green-600 text-sm font-medium">+8.2%</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Interest Earned</p>
+                        <p class="text-2xl font-bold text-gray-900">$1,234.56</p>
+                        <p class="text-xs text-blue-600 mt-1">AI: Above average yield</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span class="text-purple-600 text-xl">🤖</span>
+                        </div>
+                        <span class="text-green-600 text-sm font-medium">Safe</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">AI Risk Score</p>
+                        <p class="text-2xl font-bold text-green-600">250</p>
+                        <p class="text-xs text-green-600 mt-1">AI: Low risk profile</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <span class="text-red-600 text-xl">🛡️</span>
+                        </div>
+                        <span class="text-red-600 text-sm font-medium">Alert</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Fraud Alerts</p>
+                        <p class="text-2xl font-bold text-red-600">3</p>
+                        <p class="text-xs text-red-600 mt-1">AI: Requires attention</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fraud Detection Dashboard Integration -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Recent Fraud Alerts -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-red-600">⚠️</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Recent Fraud Alerts</h3>
+                                <p class="text-sm text-gray-500">AI-detected suspicious activities</p>
+                            </div>
+                        </div>
+                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">3 Active</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-red-500 bg-red-50 p-3 rounded">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium text-red-800 text-sm">Critical Alert</span>
+                                <span class="text-xs text-red-600">2 min ago</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Large transaction from new user: 0x742d...8b3a</p>
+                            <p class="text-xs text-gray-500 mt-1">$50,000 USDC | Risk: 850 | AI: High fraud probability</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs">Block</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs">Review</button>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-orange-500 bg-orange-50 p-3 rounded">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium text-orange-800 text-sm">High Risk</span>
+                                <span class="text-xs text-orange-600">15 min ago</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Rapid transactions: 0x9f1c...2d4e</p>
+                            <p class="text-xs text-gray-500 mt-1">12 tx in 5 min | Risk: 720 | AI: Suspicious pattern</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button class="bg-orange-600 hover:bg-orange-700 text-white px-2 py-1 rounded text-xs">Flag</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs">Monitor</button>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-yellow-500 bg-yellow-50 p-3 rounded">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium text-yellow-800 text-sm">Medium Risk</span>
+                                <span class="text-xs text-yellow-600">1 hour ago</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Unusual timing: 0x3a8b...7c9f</p>
+                            <p class="text-xs text-gray-500 mt-1">3:17 AM transaction | Risk: 450 | AI: Monitor</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button class="bg-yellow-600 hover:bg-yellow-700 text-white px-2 py-1 rounded text-xs">Watch</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs">Ignore</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex justify-between items-center">
+                        <button class="text-red-600 hover:text-red-800 text-sm font-medium">View All Alerts</button>
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Run AI Scan</button>
+                    </div>
+                </div>
+
+                <!-- Fraud Detection Statistics -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-purple-600">📊</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Fraud Detection Stats</h3>
+                                <p class="text-sm text-gray-500">AI-powered security metrics</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-green-100 px-2 py-1 rounded">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse"></span>
+                            <span class="text-green-800 text-xs">AI Active</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-green-600">Account Status</span>
+                                <span class="text-green-600">✓</span>
+                            </div>
+                            <div class="text-lg font-bold text-green-800">Secure</div>
+                            <div class="text-xs text-green-600">AI: No threats detected</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-blue-600">Risk Score</span>
+                                <span class="text-blue-600">📊</span>
+                            </div>
+                            <div class="text-lg font-bold text-blue-800">250</div>
+                            <div class="text-xs text-blue-600">AI: Low risk profile</div>
+                        </div>
+                        <div class="bg-orange-50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-orange-600">Active Alerts</span>
+                                <span class="text-orange-600">⚠️</span>
+                            </div>
+                            <div class="text-lg font-bold text-orange-800">3</div>
+                            <div class="text-xs text-orange-600">AI: Requires attention</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-purple-600">AI Scans</span>
+                                <span class="text-purple-600">🤖</span>
+                            </div>
+                            <div class="text-lg font-bold text-purple-800">1,247</div>
+                            <div class="text-xs text-purple-600">AI: 24/7 monitoring</div>
+                        </div>
+                    </div>
+
+                    <!-- Fraud Detection Chart -->
+                    <div class="bg-gray-100 h-32 rounded-lg flex items-center justify-center mb-4">
+                        <div class="text-center">
+                            <div class="text-3xl mb-1">📈</div>
+                            <div class="text-sm text-gray-600">Fraud Detection Activity</div>
+                            <div class="text-xs text-gray-500">Last 24 hours</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Blacklisted Users -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-700 mb-2">Recently Blacklisted</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">0x742d...8b3a</span>
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Fraud</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">0x9f1c...2d4e</span>
+                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">Suspicious</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">0x3a8b...7c9f</span>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Watch</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights Panel -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 ai-gradient rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">AI</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">AI Insights & Recommendations</h3>
+                            <p class="text-sm text-gray-500">Personalized advice based on your portfolio analysis</p>
+                        </div>
+                    </div>
+                    <button class="text-green-600 hover:text-green-800 text-sm font-medium">
+                        View All Insights
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded">
+                        <div class="flex items-center mb-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                            <span class="font-medium text-green-800">Optimization Opportunity</span>
+                        </div>
+                        <p class="text-sm text-gray-700">AI suggests rebalancing 10% from USDC to SYN for optimal risk-adjusted returns</p>
+                        <p class="text-xs text-gray-500 mt-1">Expected improvement: +2.3% annual yield</p>
+                    </div>
+
+                    <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
+                        <div class="flex items-center mb-2">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                            <span class="font-medium text-blue-800">Market Alert</span>
+                        </div>
+                        <p class="text-sm text-gray-700">AI detects bullish trend in ETH markets - consider increasing exposure</p>
+                        <p class="text-xs text-gray-500 mt-1">Confidence: 85% based on technical analysis</p>
+                    </div>
+
+                    <div class="border-l-4 border-orange-500 bg-orange-50 p-4 rounded">
+                        <div class="flex items-center mb-2">
+                            <span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                            <span class="font-medium text-orange-800">Risk Warning</span>
+                        </div>
+                        <p class="text-sm text-gray-700">AI flags potential volatility in SYN token - monitor closely</p>
+                        <p class="text-xs text-gray-500 mt-1">Recommendation: Set stop-loss at current levels</p>
+                    </div>
+
+                    <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
+                        <div class="flex items-center mb-2">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            <span class="font-medium text-purple-800">Staking Opportunity</span>
+                        </div>
+                        <p class="text-sm text-gray-700">AI identifies optimal staking window for SYN tokens</p>
+                        <p class="text-xs text-gray-500 mt-1">Bonus APY available for next 48 hours</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            <span class="font-medium text-purple-800">Staking Opportunity</span>
+                        </div>
+                        <p class="text-sm text-gray-700">AI identifies optimal staking window for SYN tokens</p>
+                        <p class="text-xs text-gray-500 mt-1">Bonus APY available for next 48 hours</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <!-- Banking Section -->
+        <section id="banking" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-semibold">Synora Banking Markets</h3>
+                        <p class="text-sm text-gray-500">AI-optimized lending and borrowing opportunities</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-green-100 px-3 py-1 rounded-full">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse"></span>
+                            <span class="text-green-800 text-sm font-medium">AI Optimized</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="border border-gray-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600 font-bold">ETH</span>
+                                </div>
+                                <div class="ml-3">
+                                    <div class="font-semibold">Ethereum</div>
+                                    <div class="text-sm text-gray-500">WETH</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Price</div>
+                                <div class="font-semibold">$2,000</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-gray-500">Supply APY</div>
+                                <div class="text-lg font-bold text-green-600">2.5%</div>
+                                <div class="text-xs text-green-600">AI: Optimal</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Borrow APY</div>
+                                <div class="text-lg font-bold text-blue-600">5.5%</div>
+                                <div class="text-xs text-blue-600">AI: Fair</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-blue-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                <span class="text-xs text-blue-800">AI suggests: Increase position by 15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <span class="text-green-600 font-bold">USDC</span>
+                                </div>
+                                <div class="ml-3">
+                                    <div class="font-semibold">USD Coin</div>
+                                    <div class="text-sm text-gray-500">USDC</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Price</div>
+                                <div class="font-semibold">$1.00</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-gray-500">Supply APY</div>
+                                <div class="text-lg font-bold text-green-600">3.5%</div>
+                                <div class="text-xs text-green-600">AI: High yield</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Borrow APY</div>
+                                <div class="text-lg font-bold text-blue-600">6.5%</div>
+                                <div class="text-xs text-blue-600">AI: Competitive</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-green-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                <span class="text-xs text-green-800">AI: Stable and profitable</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <span class="text-purple-600 font-bold">SYN</span>
+                                </div>
+                                <div class="ml-3">
+                                    <div class="font-semibold">Synora Token</div>
+                                    <div class="text-sm text-gray-500">SYN</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Price</div>
+                                <div class="font-semibold">$2.50</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-gray-500">Staking APY</div>
+                                <div class="text-lg font-bold text-green-600">15.0%</div>
+                                <div class="text-xs text-green-600">AI: Excellent</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Governance</div>
+                                <div class="text-lg font-bold text-purple-600">Active</div>
+                                <div class="text-xs text-purple-600">AI: High impact</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-purple-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                                <span class="text-xs text-purple-800">AI: Maximize staking now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button class="synora-gradient hover:opacity-90 text-white px-6 py-3 rounded-lg font-medium transition-opacity">
+                        Deposit Assets
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Borrow Funds
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Stake SYN
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        View History
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-red-600 text-xl">🛡️</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Synora Security Center</h3>
+                            <p class="text-sm text-gray-500">AI-powered fraud detection and threat monitoring</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                            3 Active Alerts
+                        </span>
+                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            View All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Overview Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-green-600">Account Status</span>
+                            <span class="w-2 h-2 bg-green-500 rounded-full pulse"></span>
+                        </div>
+                        <div class="text-lg font-bold text-green-800">Secure</div>
+                        <div class="text-xs text-green-600">AI: No threats detected</div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-blue-600">Risk Score</span>
+                            <span class="text-blue-600">📊</span>
+                        </div>
+                        <div class="text-lg font-bold text-blue-800">250</div>
+                        <div class="text-xs text-blue-600">AI: Low risk profile</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-orange-600">Active Alerts</span>
+                            <span class="text-orange-600">⚠️</span>
+                        </div>
+                        <div class="text-lg font-bold text-orange-800">3</div>
+                        <div class="text-xs text-orange-600">AI: Requires attention</div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-purple-600">AI Scans</span>
+                            <span class="text-purple-600">🤖</span>
+                        </div>
+                        <div class="text-lg font-bold text-purple-800">1,247</div>
+                        <div class="text-xs text-purple-600">AI: 24/7 monitoring</div>
+                    </div>
+                </div>
+
+                <!-- Recent Security Alerts -->
+                <div class="space-y-4">
+                    <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <span class="w-2 h-2 bg-red-500 rounded-full mr-2 pulse"></span>
+                                    <span class="font-medium text-red-800">Critical Alert</span>
+                                    <span class="ml-2 text-xs text-red-600">2 min ago</span>
+                                    <span class="ml-2 bg-red-200 text-red-800 px-2 py-1 rounded text-xs">AI Detected</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Large transaction detected from new user: 0x742d...8b3a</p>
+                                <p class="text-xs text-gray-500 mt-1">Amount: $50,000 USDC | Risk Score: 850 | AI: High probability of fraud</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Block</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">Review</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-orange-500 bg-orange-50 p-4 rounded">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                                    <span class="font-medium text-orange-800">High Risk Alert</span>
+                                    <span class="ml-2 text-xs text-orange-600">15 min ago</span>
+                                    <span class="ml-2 bg-orange-200 text-orange-800 px-2 py-1 rounded text-xs">AI Flagged</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Rapid transaction pattern detected: 0x9f1c...2d4e</p>
+                                <p class="text-xs text-gray-500 mt-1">12 transactions in 5 minutes | Risk Score: 720 | AI: Suspicious behavior</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-sm">Flag</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">Monitor</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                                    <span class="font-medium text-yellow-800">Medium Risk Alert</span>
+                                    <span class="ml-2 text-xs text-yellow-600">1 hour ago</span>
+                                    <span class="ml-2 bg-yellow-200 text-yellow-800 px-2 py-1 rounded text-xs">AI Notified</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Unusual timing activity: 0x3a8b...7c9f</p>
+                                <p class="text-xs text-gray-500 mt-1">Transaction at 3:17 AM | Risk Score: 450 | AI: Monitor recommended</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm">Watch</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">Ignore</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Actions -->
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        View All Alerts
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Security Settings
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Run AI Scan
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Export Report
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-indigo-600 text-xl">📊</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Synora Analytics</h3>
+                            <p class="text-sm text-gray-500">AI-powered market insights and performance metrics</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <select class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option>Last 24 hours</option>
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 3 months</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Analytics Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm opacity-90">Total Value Locked</span>
+                            <span class="text-xl">💰</span>
+                        </div>
+                        <div class="text-2xl font-bold">$2.5M</div>
+                        <div class="text-sm opacity-90">+15.3% this week</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm opacity-90">Daily Volume</span>
+                            <span class="text-xl">📈</span>
+                        </div>
+                        <div class="text-2xl font-bold">$450K</div>
+                        <div class="text-sm opacity-90">+8.2% from yesterday</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm opacity-90">Active Users</span>
+                            <span class="text-xl">👥</span>
+                        </div>
+                        <div class="text-2xl font-bold">12,847</div>
+                        <div class="text-sm opacity-90">+523 new today</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm opacity-90">AI Predictions</span>
+                            <span class="text-xl">🤖</span>
+                        </div>
+                        <div class="text-2xl font-bold">94.2%</div>
+                        <div class="text-sm opacity-90">Accuracy rate</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Portfolio Performance Chart -->
+                    <div class="border border-gray-200 rounded-xl p-6">
+                        <h4 class="font-semibold mb-4">Portfolio Performance</h4>
+                        <div class="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-6xl mb-2">📊</div>
+                                <div class="text-gray-600">AI-Enhanced Performance Chart</div>
+                                <div class="text-sm text-gray-500 mt-2">+12.5% overall growth</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div class="text-green-600">AI: Bullish trend detected</div>
+                            <div class="text-blue-600">Confidence: 87%</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Trends Chart -->
+                    <div class="border border-gray-200 rounded-xl p-6">
+                        <h4 class="font-semibold mb-4">Market Trends Analysis</h4>
+                        <div class="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-6xl mb-2">📈</div>
+                                <div class="text-gray-600">AI Market Prediction</div>
+                                <div class="text-sm text-gray-500 mt-2">Optimal entry points identified</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between text-sm">
+                            <div class="text-green-600">AI: Strong buy signal</div>
+                            <div class="text-blue-600">Risk: Low</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights Table -->
+                <div class="border border-gray-200 rounded-xl p-6">
+                    <h4 class="font-semibold mb-4">AI Market Insights</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI Signal</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confidence</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Frame</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SYN</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Strong Buy</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">92%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$3.25</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7 days</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ETH</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Buy</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">78%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$2,250</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14 days</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">USDC</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Hold</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">95%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1.00</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Stable</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Analytics Actions -->
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Generate AI Report
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Export Data
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Set Alerts
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        AI Predictions
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Governance Section -->
+        <section id="governance" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-purple-600 text-xl">🗳️</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Synora Governance</h3>
+                            <p class="text-sm text-gray-500">Community-driven platform decisions with AI insights</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                            DAO Active
+                        </span>
+                        <button class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                            Create Proposal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Governance Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-purple-600">Your Voting Power</span>
+                            <span class="text-purple-600">🗳️</span>
+                        </div>
+                        <div class="text-lg font-bold text-purple-800">10,000 SYN</div>
+                        <div class="text-xs text-purple-600">AI: Top 15% voter</div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-blue-600">Active Proposals</span>
+                            <span class="text-blue-600">📋</span>
+                        </div>
+                        <div class="text-lg font-bold text-blue-800">3</div>
+                        <div class="text-xs text-blue-600">AI: 2 require attention</div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-green-600">Participation Rate</span>
+                            <span class="text-green-600">👥</span>
+                        </div>
+                        <div class="text-lg font-bold text-green-800">67%</div>
+                        <div class="text-xs text-green-600">AI: Above average</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-orange-600">Quorum</span>
+                            <span class="text-orange-600">📊</span>
+                        </div>
+                        <div class="text-lg font-bold text-orange-800">45.2%</div>
+                        <div class="text-xs text-orange-600">AI: Met threshold</div>
+                    </div>
+                </div>
+
+                <!-- Active Proposals -->
+                <div class="space-y-4 mb-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Proposal #42: Increase SYN Staking Rewards</h4>
+                                <p class="text-sm text-gray-600 mt-1">Proposal to increase SYN staking APY from 15% to 18% to attract more liquidity</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span>
+                                <div class="text-sm text-gray-500 mt-1">Ends in 2 days</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-green-600">78%</div>
+                                <div class="text-xs text-gray-500">For</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-600">22%</div>
+                                <div class="text-xs text-gray-500">Against</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-gray-600">0%</div>
+                                <div class="text-xs text-gray-500">Abstain</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                <span class="text-xs text-green-800">AI: Strongly recommend voting FOR</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">Vote For</button>
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Vote Against</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">Abstain</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Proposal #41: Add AI-Powered Risk Assessment</h4>
+                                <p class="text-sm text-gray-600 mt-1">Integrate advanced AI risk assessment tools for enhanced security</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span>
+                                <div class="text-sm text-gray-500 mt-1">Ends in 5 days</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-green-600">92%</div>
+                                <div class="text-xs text-gray-500">For</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-600">8%</div>
+                                <div class="text-xs text-gray-500">Against</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-gray-600">0%</div>
+                                <div class="text-xs text-gray-500">Abstain</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                <span class="text-xs text-green-800">AI: Critical for platform security</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">Vote For</button>
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Vote Against</button>
+                                <button class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">Abstain</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Governance Actions -->
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Create Proposal
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        View History
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Delegate Votes
+                    </button>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        AI Insights
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 synora-gradient rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <div class="w-8 h-8 ai-gradient rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">AI</span>
+                        </div>
+                        <span class="ml-3 text-xl font-bold synora-logo">Synora AI</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Next-Generation DeFi platform powered by ChatGPT with intelligent security and analytics.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">AI Assistant</a></li>
+                        <li><a href="#" class="hover:text-white">Banking</a></li>
+                        <li><a href="#" class="hover:text-white">Staking</a></li>
+                        <li><a href="#" class="hover:text-white">Analytics</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">AI Features</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">ChatGPT Integration</a></li>
+                        <li><a href="#" class="hover:text-white">Portfolio Analysis</a></li>
+                        <li><a href="#" class="hover:text-white">Risk Intelligence</a></li>
+                        <li><a href="#" class="hover:text-white">Market Insights</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Community</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Discord</a></li>
+                        <li><a href="#" class="hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="hover:text-white">Telegram</a></li>
+                        <li><a href="#" class="hover:text-white">Forum</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Synora AI. All rights reserved. | Powered by ChatGPT Technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Chat functionality
+        function handleChatInput(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addUserMessage(message);
+                input.value = '';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addAIResponse(generateAIResponse(message));
+                }, 1500);
+            }
+        }
+
+        function addUserMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageHtml = `
+                <div class="flex items-start space-x-3 chat-message justify-end">
+                    <div class="bg-blue-600 text-white p-3 rounded-lg shadow-sm max-w-md">
+                        <p class="text-sm">${message}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-gray-600 text-xs font-bold">You</span>
+                    </div>
+                </div>
+            `;
+            chatContainer.querySelector('.space-y-4').insertAdjacentHTML('beforeend', messageHtml);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addAIResponse(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageHtml = `
+                <div class="flex items-start space-x-3 chat-message">
+                    <div class="w-8 h-8 ai-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xs font-bold">AI</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-md">
+                        <p class="text-sm text-gray-800">${message}</p>
+                    </div>
+                </div>
+            `;
+            chatContainer.querySelector('.space-y-4').insertAdjacentHTML('beforeend', messageHtml);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingHtml = `
+                <div class="flex items-start space-x-3 chat-message" id="typingIndicator">
+                    <div class="w-8 h-8 ai-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xs font-bold">AI</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.querySelector('.space-y-4').insertAdjacentHTML('beforeend', typingHtml);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function generateAIResponse(userMessage) {
+            const responses = {
+                'portfolio': 'Based on your portfolio analysis, you have a well-diversified allocation with 65% in stable assets and 35% in growth assets. Your risk score of 250 indicates a conservative approach. I recommend considering a slight increase in SYN allocation to optimize returns while maintaining low risk.',
+                'market': 'Current market trends show bullish sentiment in ETH markets with increasing DeFi activity. SYN token is showing strong fundamentals with growing adoption. Technical indicators suggest potential for continued growth in the short term.',
+                'staking': 'Your current staking strategy is performing well at 15% APY. Consider increasing your SYN stake to maximize returns, especially with the current bonus APY window. AI predicts optimal staking conditions for the next 48 hours.',
+                'security': 'Your security profile is strong with a risk score of 250. No immediate threats detected. Continue monitoring unusual activity patterns. AI recommends enabling 2FA and using hardware wallets for enhanced security.',
+                'default': 'I can help you with portfolio analysis, market insights, staking optimization, and security assessment. What specific aspect of your DeFi journey would you like to explore?'
+            };
+
+            const lowerMessage = userMessage.toLowerCase();
+            for (const [key, response] of Object.entries(responses)) {
+                if (lowerMessage.includes(key)) {
+                    return response;
+                }
+            }
+            return responses.default;
+        }
+
+        function quickQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
+        function clearChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.querySelector('.space-y-4').innerHTML = `
+                <div class="flex items-start space-x-3 chat-message">
+                    <div class="w-8 h-8 ai-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xs font-bold">AI</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-md">
+                        <p class="text-sm text-gray-800">
+                            Chat cleared! How can I help you with your Synora AI experience today?
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Wallet connection
+        document.getElementById('connectWallet').addEventListener('click', function() {
+            if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({ method: 'eth_requestAccounts' })
+                    .then(accounts => {
+                        this.textContent = 'Connected: ' + accounts[0].slice(0, 6) + '...';
+                        this.classList.remove('synora-gradient');
+                        this.classList.add('bg-green-600', 'hover:bg-green-700');
+                    })
+                    .catch(err => {
+                        alert('Please install MetaMask or another Web3 wallet');
+                    });
+            } else {
+                alert('Please install MetaMask or another Web3 wallet');
+            }
+        });
+
+        // Navigation handling
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.classList.remove('border-b-2', 'border-green-600', 'text-green-600');
+                    l.classList.add('text-gray-500');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('border-b-2', 'border-green-600', 'text-green-600');
+                this.classList.remove('text-gray-500');
+                
+                // Smooth scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
