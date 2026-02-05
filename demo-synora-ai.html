@@ -717,6 +717,22 @@
 
     <!-- Main Content -->
     <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        <!-- Quick Navigation Test -->
+        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 mb-6">
+            <h3 class="text-lg font-semibold mb-3">🧪 Navigation Test - Click Any Section</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <a href="#business-opportunities" class="bg-blue-100 text-blue-700 px-3 py-2 rounded hover:bg-blue-200 transition-colors text-center">Business Opportunities</a>
+                <a href="#ai-assistant" class="bg-green-100 text-green-700 px-3 py-2 rounded hover:bg-green-200 transition-colors text-center">AI Assistant</a>
+                <a href="#banking" class="bg-purple-100 text-purple-700 px-3 py-2 rounded hover:bg-purple-200 transition-colors text-center">Banking</a>
+                <a href="#staking" class="bg-orange-100 text-orange-700 px-3 py-2 rounded hover:bg-orange-200 transition-colors text-center">Staking</a>
+                <a href="#analytics" class="bg-indigo-100 text-indigo-700 px-3 py-2 rounded hover:bg-indigo-200 transition-colors text-center">Analytics</a>
+                <a href="#ai-features" class="bg-pink-100 text-pink-700 px-3 py-2 rounded hover:bg-pink-200 transition-colors text-center">AI Features</a>
+                <a href="#community" class="bg-teal-100 text-teal-700 px-3 py-2 rounded hover:bg-teal-200 transition-colors text-center">Community</a>
+                <a href="#platform-benefits" class="bg-red-100 text-red-700 px-3 py-2 rounded hover:bg-red-200 transition-colors text-center">Platform Benefits</a>
+            </div>
+            <div id="navigation-status" class="mt-4 text-sm text-gray-600 text-center">Click any section above to test navigation</div>
+        </div>
+
         <!-- Hero Section for Business Opportunities -->
         <section id="business-opportunities" class="mb-12">
             <div class="bg-gradient-to-r from-synora-blue to-synora-purple rounded-2xl p-8 text-white mb-8">
@@ -4644,6 +4660,19 @@
                     console.log('Target ID:', targetId);
                     console.log('Target element found:', !!targetElement);
                     
+                    // Update navigation status
+                    const statusElement = document.getElementById('navigation-status');
+                    if (statusElement) {
+                        statusElement.innerHTML = `✅ Successfully navigated to <strong>${targetId}</strong> section!`;
+                        statusElement.className = 'mt-4 text-sm text-green-600 text-center font-medium';
+                        
+                        // Clear status after 3 seconds
+                        setTimeout(() => {
+                            statusElement.innerHTML = 'Click any section above to test navigation';
+                            statusElement.className = 'mt-4 text-sm text-gray-600 text-center';
+                        }, 3000);
+                    }
+                    
                     if (targetElement) {
                         console.log('Scrolling to element:', targetElement);
                         
@@ -4689,6 +4718,12 @@
                         console.error('Target element not found:', targetId);
                         // Show error message to user
                         alert(`Section "${targetId}" not found. Please check if the section exists.`);
+                        
+                        // Update status with error
+                        if (statusElement) {
+                            statusElement.innerHTML = `❌ Section <strong>${targetId}</strong> not found!`;
+                            statusElement.className = 'mt-4 text-sm text-red-600 text-center font-medium';
+                        }
                     }
                 });
             });
