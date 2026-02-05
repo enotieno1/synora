@@ -287,6 +287,14 @@
         Skip to main content
     </a>
     
+    <!-- Navigation Test Panel (for debugging) -->
+    <div id="nav-test" style="position: fixed; top: 20px; right: 20px; background: white; padding: 10px; border: 2px solid #3b82f6; border-radius: 8px; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h4 style="margin: 0 0 10px 0; color: #3b82f6;">Navigation Test</h4>
+        <button onclick="testNavigation()" style="background: #3b82f6; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin: 2px;">Test Navigation</button>
+        <button onclick="toggleDebugPanel()" style="background: #ef4444; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin: 2px;">Hide</button>
+        <div id="debug-info" style="margin-top: 10px; font-size: 12px; max-height: 200px; overflow-y: auto;"></div>
+    </div>
+    
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40" role="banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -709,6 +717,18 @@
 
     <!-- Main Content -->
     <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        <!-- Quick Navigation Links (Fallback) -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <h3 class="text-lg font-semibold mb-3">Quick Navigation</h3>
+            <div class="flex flex-wrap gap-2">
+                <a href="#ai-assistant" class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors">AI Assistant</a>
+                <a href="#banking" class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors">Banking</a>
+                <a href="#staking" class="px-3 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors">Staking</a>
+                <a href="#analytics" class="px-3 py-1 bg-orange-100 text-orange-700 rounded hover:bg-orange-200 transition-colors">Analytics</a>
+                <a href="#ai-features" class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition-colors">AI Features</a>
+                <a href="#community" class="px-3 py-1 bg-pink-100 text-pink-700 rounded hover:bg-pink-200 transition-colors">Community</a>
+            </div>
+        </div>
         <!-- Breadcrumb Navigation -->
         <nav class="flex items-center space-x-2 text-sm mb-6" role="navigation" aria-label="Breadcrumb navigation">
             <a href="#" class="text-synora-gray-500 hover:text-synora-gray-700 transition-colors">
@@ -4302,52 +4322,122 @@
         });
         
         // Smooth scrolling for all anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobileMenu');
-                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Navigation script loaded');
+            
+            // Test: Log all anchor links
+            const anchorLinks = document.querySelectorAll('a[href^="#"]');
+            console.log('Found anchor links:', anchorLinks.length);
+            anchorLinks.forEach((link, index) => {
+                console.log(`Link ${index}:`, link.href, '->', link.getAttribute('href'));
+            });
+            
+            // Test: Log all sections with IDs
+            const sectionsWithIds = document.querySelectorAll('section[id]');
+            console.log('Found sections with IDs:', sectionsWithIds.length);
+            sectionsWithIds.forEach((section, index) => {
+                console.log(`Section ${index}:`, section.id);
+            });
+            
+            anchorLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    console.log('Navigation clicked:', this.getAttribute('href'));
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    console.log('Target ID:', targetId);
+                    console.log('Target element found:', !!targetElement);
+                    
+                    if (targetElement) {
+                        console.log('Scrolling to element:', targetElement);
+                        
+                        // Close mobile menu if open
+                        const mobileMenu = document.getElementById('mobileMenu');
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                        
+                        // Close sidebar if open
+                        const sidebar = document.getElementById('dashboardSidebar');
+                        if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                            sidebar.classList.add('-translate-x-full');
+                        }
+                        
+                        // Smooth scroll to target
+                        const headerOffset = 80; // Account for fixed header
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        console.log('Scroll position:', offsetPosition);
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL hash without jumping
+                        history.pushState(null, null, `#${targetId}`);
+                        
+                        // Announce to screen readers
+                        announceToScreenReader(`Navigated to ${targetId} section`);
+                        
+                        // Add focus to the section for accessibility
+                        targetElement.setAttribute('tabindex', '-1');
+                        targetElement.focus();
+                        
+                        // Remove tabindex after blur
+                        targetElement.addEventListener('blur', function() {
+                            targetElement.removeAttribute('tabindex');
+                        }, { once: true });
+                    } else {
+                        console.error('Target element not found:', targetId);
+                        // Show error message to user
+                        alert(`Section "${targetId}" not found. Please check if the section exists.`);
                     }
-                    
-                    // Close sidebar if open
-                    const sidebar = document.getElementById('dashboardSidebar');
-                    if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
-                        sidebar.classList.add('-translate-x-full');
-                    }
-                    
-                    // Smooth scroll to target
-                    const headerOffset = 80; // Account for fixed header
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update URL hash without jumping
-                    history.pushState(null, null, `#${targetId}`);
-                    
-                    // Announce to screen readers
-                    announceToScreenReader(`Navigated to ${targetId} section`);
-                    
-                    // Add focus to the section for accessibility
-                    targetElement.setAttribute('tabindex', '-1');
-                    targetElement.focus();
-                    
-                    // Remove tabindex after blur
-                    targetElement.addEventListener('blur', function() {
-                        targetElement.removeAttribute('tabindex');
-                    }, { once: true });
-                }
+                });
             });
         });
+        
+        // Debug functions for navigation testing
+        function testNavigation() {
+            const debugInfo = document.getElementById('debug-info');
+            let output = '<strong>Navigation Debug Info:</strong><br><br>';
+            
+            // Test anchor links
+            const anchorLinks = document.querySelectorAll('a[href^="#"]');
+            output += `Found ${anchorLinks.length} anchor links:<br>`;
+            anchorLinks.forEach((link, index) => {
+                const href = link.getAttribute('href');
+                const targetExists = document.getElementById(href.substring(1));
+                output += `${index + 1}. ${href} - ${targetExists ? '✅ Found' : '❌ Missing'}<br>`;
+            });
+            
+            // Test sections
+            const sections = document.querySelectorAll('section[id]');
+            output += `<br>Found ${sections.length} sections:<br>`;
+            sections.forEach((section, index) => {
+                output += `${index + 1}. #${section.id}<br>`;
+            });
+            
+            // Test specific sections
+            const testSections = ['ai-assistant', 'banking', 'staking', 'analytics', 'ai-features', 'community'];
+            output += '<br>Testing specific sections:<br>';
+            testSections.forEach(sectionId => {
+                const element = document.getElementById(sectionId);
+                output += `#${sectionId} - ${element ? '✅ Found' : '❌ Missing'}<br>`;
+            });
+            
+            debugInfo.innerHTML = output;
+        }
+        
+        function toggleDebugPanel() {
+            const panel = document.getElementById('nav-test');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Auto-run test on page load
+        setTimeout(testNavigation, 1000);
         
         // Handle initial hash on page load
         function handleInitialHash() {
