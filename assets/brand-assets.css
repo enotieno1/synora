@@ -1,0 +1,567 @@
+/* Synora Brand Assets - Complete Brand System */
+
+/* === BRAND FOUNDATIONS === */
+
+/* CSS Custom Properties (Variables) */
+:root {
+  /* Brand Typography */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Brand Color Palette */
+  --synora-blue: #3b82f6;
+  --synora-purple: #8b5cf6;
+  --synora-green: #10a37f;
+  --synora-orange: #f97316;
+  --synora-red: #ef4444;
+  
+  /* Neutral Colors */
+  --synora-gray-50: #f8fafc;
+  --synora-gray-100: #f1f5f9;
+  --synora-gray-200: #e2e8f0;
+  --synora-gray-300: #cbd5e1;
+  --synora-gray-400: #94a3b8;
+  --synora-gray-500: #64748b;
+  --synora-gray-600: #475569;
+  --synora-gray-700: #334155;
+  --synora-gray-800: #1e293b;
+  --synora-gray-900: #0f172a;
+  
+  /* Semantic Colors */
+  --synora-success: #22c55e;
+  --synora-warning: #eab308;
+  --synora-error: #ef4444;
+  --synora-info: #3b82f6;
+  
+  /* Brand Gradients */
+  --synora-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --synora-gradient-reverse: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+  --synora-gradient-green: linear-gradient(135deg, #10a37f 0%, #059669 100%);
+  
+  /* Spacing Scale */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+  --radius-2xl: 1.5rem;  /* 24px */
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+}
+
+/* === BRAND TYPOGRAPHY === */
+
+/* Base Typography */
+body {
+  font-family: var(--font-primary);
+  color: var(--synora-gray-700);
+  line-height: 1.6;
+}
+
+/* Typography Classes */
+.text-synora-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-synora-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-synora-base { font-size: 1rem; line-height: 1.5rem; }
+.text-synora-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-synora-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-synora-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-synora-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.text-synora-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+.text-synora-5xl { font-size: 3rem; line-height: 1; }
+.text-synora-6xl { font-size: 3.75rem; line-height: 1; }
+
+/* Font Weights */
+.font-synora-light { font-weight: 300; }
+.font-synora-normal { font-weight: 400; }
+.font-synora-medium { font-weight: 500; }
+.font-synora-semibold { font-weight: 600; }
+.font-synora-bold { font-weight: 700; }
+.font-synora-extrabold { font-weight: 800; }
+
+/* Visual Hierarchy */
+.hierarchy-primary {
+  font-weight: 800;
+  font-size: 3rem;
+  color: var(--synora-gray-900);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hierarchy-secondary {
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--synora-gray-800);
+  line-height: 1.2;
+}
+
+.hierarchy-tertiary {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--synora-gray-700);
+  line-height: 1.3;
+}
+
+.hierarchy-body {
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--synora-gray-600);
+  line-height: 1.5;
+}
+
+.hierarchy-caption {
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--synora-gray-500);
+  line-height: 1.4;
+}
+
+/* === BRAND COLORS === */
+
+/* Text Colors */
+.text-synora-blue { color: var(--synora-blue); }
+.text-synora-purple { color: var(--synora-purple); }
+.text-synora-green { color: var(--synora-green); }
+.text-synora-orange { color: var(--synora-orange); }
+.text-synora-red { color: var(--synora-red); }
+.text-synora-gray-50 { color: var(--synora-gray-50); }
+.text-synora-gray-100 { color: var(--synora-gray-100); }
+.text-synora-gray-200 { color: var(--synora-gray-200); }
+.text-synora-gray-300 { color: var(--synora-gray-300); }
+.text-synora-gray-400 { color: var(--synora-gray-400); }
+.text-synora-gray-500 { color: var(--synora-gray-500); }
+.text-synora-gray-600 { color: var(--synora-gray-600); }
+.text-synora-gray-700 { color: var(--synora-gray-700); }
+.text-synora-gray-800 { color: var(--synora-gray-800); }
+.text-synora-gray-900 { color: var(--synora-gray-900); }
+
+/* Background Colors */
+.bg-synora-blue { background-color: var(--synora-blue); }
+.bg-synora-purple { background-color: var(--synora-purple); }
+.bg-synora-green { background-color: var(--synora-green); }
+.bg-synora-orange { background-color: var(--synora-orange); }
+.bg-synora-red { background-color: var(--synora-red); }
+.bg-synora-gray-50 { background-color: var(--synora-gray-50); }
+.bg-synora-gray-100 { background-color: var(--synora-gray-100); }
+.bg-synora-gray-200 { background-color: var(--synora-gray-200); }
+.bg-synora-gray-300 { background-color: var(--synora-gray-300); }
+.bg-synora-gray-400 { background-color: var(--synora-gray-400); }
+.bg-synora-gray-500 { background-color: var(--synora-gray-500); }
+.bg-synora-gray-600 { background-color: var(--synora-gray-600); }
+.bg-synora-gray-700 { background-color: var(--synora-gray-700); }
+.bg-synora-gray-800 { background-color: var(--synora-gray-800); }
+.bg-synora-gray-900 { background-color: var(--synora-gray-900); }
+
+/* Gradient Backgrounds */
+.bg-synora-gradient { background: var(--synora-gradient); }
+.bg-synora-gradient-reverse { background: var(--synora-gradient-reverse); }
+.bg-synora-gradient-green { background: var(--synora-gradient-green); }
+
+/* Opacity Variants */
+.bg-synora-blue-10 { background-color: rgba(59, 130, 246, 0.1); }
+.bg-synora-blue-20 { background-color: rgba(59, 130, 246, 0.2); }
+.bg-synora-purple-10 { background-color: rgba(139, 92, 246, 0.1); }
+.bg-synora-purple-20 { background-color: rgba(139, 92, 246, 0.2); }
+.bg-synora-green-10 { background-color: rgba(16, 163, 127, 0.1); }
+.bg-synora-green-20 { background-color: rgba(16, 163, 127, 0.2); }
+
+/* === BRAND COMPONENTS === */
+
+/* Buttons */
+.synora-button {
+  background: var(--synora-gradient);
+  color: white;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1;
+  min-height: 44px; /* Accessibility minimum touch target */
+}
+
+.synora-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.synora-button:focus {
+  outline: 2px solid var(--synora-blue);
+  outline-offset: 2px;
+}
+
+.synora-button:active {
+  transform: translateY(0);
+}
+
+.synora-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants */
+.synora-button-secondary {
+  background: transparent;
+  color: var(--synora-blue);
+  border: 2px solid var(--synora-blue);
+}
+
+.synora-button-secondary:hover {
+  background: var(--synora-blue);
+  color: white;
+}
+
+.synora-button-ghost {
+  background: transparent;
+  color: var(--synora-gray-600);
+  border: 1px solid var(--synora-gray-300);
+}
+
+.synora-button-ghost:hover {
+  background: var(--synora-gray-50);
+  border-color: var(--synora-gray-400);
+}
+
+.synora-button-success {
+  background: var(--synora-green);
+}
+
+.synora-button-success:hover {
+  box-shadow: 0 10px 25px rgba(16, 163, 127, 0.3);
+}
+
+.synora-button-danger {
+  background: var(--synora-red);
+}
+
+.synora-button-danger:hover {
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+/* Button Sizes */
+.synora-button-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.75rem;
+  min-height: 36px;
+}
+
+.synora-button-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: 1rem;
+  min-height: 52px;
+}
+
+/* Cards */
+.synora-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--synora-gray-200);
+  transition: all var(--transition-normal);
+  overflow: hidden;
+}
+
+.synora-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.synora-card-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--synora-gray-200);
+}
+
+.synora-card-body {
+  padding: var(--space-6);
+}
+
+.synora-card-footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--synora-gray-200);
+  background: var(--synora-gray-50);
+}
+
+/* Form Elements */
+.synora-input {
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--synora-gray-700);
+  background: white;
+  border: 1px solid var(--synora-gray-300);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  transition: all var(--transition-normal);
+  width: 100%;
+}
+
+.synora-input:focus {
+  outline: none;
+  border-color: var(--synora-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.synora-input::placeholder {
+  color: var(--synora-gray-400);
+}
+
+.synora-input:disabled {
+  background: var(--synora-gray-100);
+  color: var(--synora-gray-400);
+  cursor: not-allowed;
+}
+
+.synora-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.synora-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  padding-right: var(--space-10);
+}
+
+.synora-checkbox,
+.synora-radio {
+  width: 1rem;
+  height: 1rem;
+  color: var(--synora-blue);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--synora-gray-300);
+  transition: all var(--transition-normal);
+}
+
+.synora-checkbox:checked,
+.synora-radio:checked {
+  background: var(--synora-blue);
+  border-color: var(--synora-blue);
+}
+
+.synora-radio {
+  border-radius: 50%;
+}
+
+/* === BRAND ANIMATIONS === */
+
+/* Keyframes */
+@keyframes synora-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes synora-slide-in {
+  from { 
+    opacity: 0; 
+    transform: translateX(-20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+@keyframes synora-pulse {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.5; 
+  }
+}
+
+@keyframes synora-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); 
+  }
+}
+
+@keyframes synora-spin {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* Animation Classes */
+.synora-fade-in {
+  animation: synora-fade-in 0.5s ease-out;
+}
+
+.synora-slide-in {
+  animation: synora-slide-in 0.3s ease-out;
+}
+
+.synora-pulse {
+  animation: synora-pulse 2s infinite;
+}
+
+.synora-glow {
+  animation: synora-glow 2s infinite;
+}
+
+.synora-spin {
+  animation: synora-spin 1s linear infinite;
+}
+
+/* === BRAND UTILITIES === */
+
+/* Spacing */
+.p-synora-1 { padding: var(--space-1); }
+.p-synora-2 { padding: var(--space-2); }
+.p-synora-3 { padding: var(--space-3); }
+.p-synora-4 { padding: var(--space-4); }
+.p-synora-5 { padding: var(--space-5); }
+.p-synora-6 { padding: var(--space-6); }
+.p-synora-8 { padding: var(--space-8); }
+.p-synora-10 { padding: var(--space-10); }
+.p-synora-12 { padding: var(--space-12); }
+
+.m-synora-1 { margin: var(--space-1); }
+.m-synora-2 { margin: var(--space-2); }
+.m-synora-3 { margin: var(--space-3); }
+.m-synora-4 { margin: var(--space-4); }
+.m-synora-5 { margin: var(--space-5); }
+.m-synora-6 { margin: var(--space-6); }
+.m-synora-8 { margin: var(--space-8); }
+.m-synora-10 { margin: var(--space-10); }
+.m-synora-12 { margin: var(--space-12); }
+
+/* Border Radius */
+.rounded-synora-sm { border-radius: var(--radius-sm); }
+.rounded-synora-md { border-radius: var(--radius-md); }
+.rounded-synora-lg { border-radius: var(--radius-lg); }
+.rounded-synora-xl { border-radius: var(--radius-xl); }
+.rounded-synora-2xl { border-radius: var(--radius-2xl); }
+
+/* Shadows */
+.shadow-synora-sm { box-shadow: var(--shadow-sm); }
+.shadow-synora-md { box-shadow: var(--shadow-md); }
+.shadow-synora-lg { box-shadow: var(--shadow-lg); }
+.shadow-synora-xl { box-shadow: var(--shadow-xl); }
+
+/* === BRAND ACCESSIBILITY === */
+
+/* Focus Styles */
+.synora-focus:focus-visible {
+  outline: 2px solid var(--synora-blue);
+  outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .synora-button {
+    border: 2px solid currentColor;
+  }
+  
+  .synora-card {
+    border: 2px solid var(--synora-gray-400);
+  }
+}
+
+/* === BRAND RESPONSIVE === */
+
+/* Mobile First Responsive */
+@media (max-width: 640px) {
+  .hierarchy-primary {
+    font-size: 2rem;
+  }
+  
+  .hierarchy-secondary {
+    font-size: 1.5rem;
+  }
+  
+  .synora-button {
+    padding: var(--space-3) var(--space-4);
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .synora-card {
+    padding: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .synora-card:hover {
+    transform: translateY(-6px);
+  }
+}
+
+/* === BRAND PRINT === */
+@media print {
+  .synora-button {
+    background: transparent !important;
+    color: var(--synora-gray-900) !important;
+    border: 1px solid var(--synora-gray-300) !important;
+  }
+  
+  .synora-card {
+    box-shadow: none !important;
+    border: 1px solid var(--synora-gray-300) !important;
+  }
+}

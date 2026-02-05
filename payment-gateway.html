@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synora Payment Gateway - Secure DeFi Payments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        .synora-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .payment-method {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .payment-method.active {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-animation {
+            animation: successPulse 0.6s ease-out;
+        }
+        @keyframes successPulse {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Header -->
+    <header class="bg-gray-900/50 backdrop-blur-lg border-b border-gray-700">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 synora-gradient rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wallet text-white"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold">Synora Payment Gateway</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400">Secure DeFi Payments</span>
+                    <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Payment Amount Section -->
+            <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Payment Details</h2>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-shield-alt text-green-400"></i>
+                        <span class="text-sm text-green-400">Secured by Synora</span>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Payment Amount</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">$</span>
+                            <input type="number" id="paymentAmount" placeholder="0.00" 
+                                   class="w-full pl-8 pr-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                                   value="100.00" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Payment Description</label>
+                        <input type="text" id="paymentDescription" placeholder="Payment for services" 
+                               class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                               value="Synora Platform Services">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in">
+                <h2 class="text-xl font-semibold mb-4">Select Payment Method</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="payment-method card-hover bg-gray-700/30 rounded-xl p-4 cursor-pointer active" 
+                         onclick="selectPaymentMethod('card')">
+                        <div class="text-center">
+                            <i class="fas fa-credit-card text-3xl text-blue-400 mb-2"></i>
+                            <h3 class="font-medium">Credit/Debit Card</h3>
+                            <p class="text-sm text-gray-400 mt-1">Visa, Mastercard, etc.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method card-hover bg-gray-700/30 rounded-xl p-4 cursor-pointer" 
+                         onclick="selectPaymentMethod('crypto')">
+                        <div class="text-center">
+                            <i class="fab fa-ethereum text-3xl text-purple-400 mb-2"></i>
+                            <h3 class="font-medium">Cryptocurrency</h3>
+                            <p class="text-sm text-gray-400 mt-1">ETH, USDC, WBTC</p>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method card-hover bg-gray-700/30 rounded-xl p-4 cursor-pointer" 
+                         onclick="selectPaymentMethod('bank')">
+                        <div class="text-center">
+                            <i class="fas fa-university text-3xl text-green-400 mb-2"></i>
+                            <h3 class="font-medium">Bank Transfer</h3>
+                            <p class="text-sm text-gray-400 mt-1">ACH, Wire Transfer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Payment Form -->
+            <div id="cardPaymentForm" class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in">
+                <h2 class="text-xl font-semibold mb-4">Card Information</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Card Number</label>
+                        <div class="relative">
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                                   class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                                   maxlength="19">
+                            <i class="fas fa-credit-card absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Expiry Date</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY" 
+                                   class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                                   maxlength="5">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" 
+                                   class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                                   maxlength="4">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Cardholder Name</label>
+                        <input type="text" id="cardholderName" placeholder="John Doe" 
+                               class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Billing Address</label>
+                        <input type="text" id="billingAddress" placeholder="123 Main St, City, State 12345" 
+                               class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crypto Payment Form -->
+            <div id="cryptoPaymentForm" class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in hidden">
+                <h2 class="text-xl font-semibold mb-4">Cryptocurrency Payment</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Select Cryptocurrency</label>
+                        <select id="cryptoType" class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white">
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="USDC">USD Coin (USDC)</option>
+                            <option value="WBTC">Wrapped Bitcoin (WBTC)</option>
+                            <option value="SYN">Synora Token (SYN)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Wallet Address</label>
+                        <input type="text" id="walletAddress" placeholder="0x..." 
+                               class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400">
+                    </div>
+                    
+                    <div class="bg-gray-700/30 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-400">Estimated Crypto Amount</span>
+                            <span id="cryptoAmount" class="font-medium">0.00 ETH</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Network Fee</span>
+                            <span class="font-medium">~0.001 ETH</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="connectWallet()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-wallet mr-2"></i>
+                            Connect Wallet
+                        </button>
+                        <div id="walletStatus" class="text-sm text-gray-400">Not connected</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank Transfer Form -->
+            <div id="bankPaymentForm" class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in hidden">
+                <h2 class="text-xl font-semibold mb-4">Bank Transfer Information</h2>
+                
+                <div class="bg-gray-700/30 rounded-lg p-4 mb-4">
+                    <h3 class="font-medium mb-3">Synora Bank Account Details</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Account Name:</span>
+                            <span>Synora Finance Inc.</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Routing Number:</span>
+                            <span>021000021</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Account Number:</span>
+                            <span>1234567890123456</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Bank Name:</span>
+                            <span>Synora Bank</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Your Reference</label>
+                    <input type="text" id="bankReference" placeholder="Payment reference" 
+                           class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400">
+                </div>
+            </div>
+
+            <!-- Security & Fraud Detection -->
+            <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 mb-6 fade-in">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Security Verification</h2>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-shield-alt text-green-400"></i>
+                        <span class="text-sm text-green-400">AI Protected</span>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gray-700/30 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-400">Risk Score</span>
+                            <span id="riskScore" class="font-medium text-green-400">Low (15/100)</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div id="riskBar" class="bg-green-400 h-2 rounded-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-700/30 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Verification Status</span>
+                            <span class="text-sm text-green-400">✓ Verified</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 flex items-center space-x-3">
+                    <input type="checkbox" id="termsAccepted" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                    <label for="termsAccepted" class="text-sm text-gray-300">
+                        I agree to the Terms of Service and Privacy Policy
+                    </label>
+                </div>
+            </div>
+
+            <!-- Payment Button -->
+            <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 fade-in">
+                <button onclick="processPayment()" class="w-full synora-gradient text-white font-semibold py-4 px-6 rounded-lg hover:opacity-90 transition-opacity">
+                    <i class="fas fa-lock mr-2"></i>
+                    Process Secure Payment
+                </button>
+                
+                <div class="mt-4 text-center text-sm text-gray-400">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Your payment is protected by Synora's advanced fraud detection system
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4 success-animation">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Payment Successful!</h3>
+                <p class="text-gray-400 mb-6">Your payment has been processed securely.</p>
+                
+                <div class="bg-gray-700/30 rounded-lg p-4 mb-6 text-left">
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Transaction ID:</span>
+                            <span id="transactionId">TXN-123456789</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Amount:</span>
+                            <span id="paidAmount">$100.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Status:</span>
+                            <span class="text-green-400">Completed</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="closeSuccessModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPaymentMethod = 'card';
+        let walletConnected = false;
+
+        // Payment method selection
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Hide all forms
+            document.getElementById('cardPaymentForm').classList.add('hidden');
+            document.getElementById('cryptoPaymentForm').classList.add('hidden');
+            document.getElementById('bankPaymentForm').classList.add('hidden');
+            
+            // Show selected form
+            if (method === 'card') {
+                document.getElementById('cardPaymentForm').classList.remove('hidden');
+            } else if (method === 'crypto') {
+                document.getElementById('cryptoPaymentForm').classList.remove('hidden');
+                updateCryptoAmount();
+            } else if (method === 'bank') {
+                document.getElementById('bankPaymentForm').classList.remove('hidden');
+            }
+        }
+
+        // Format card number
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Format expiry date
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Only numbers for CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Update crypto amount
+        function updateCryptoAmount() {
+            const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+            const cryptoType = document.getElementById('cryptoType').value;
+            
+            // Mock conversion rates
+            const rates = {
+                'ETH': 0.00005,
+                'USDC': 1,
+                'WBTC': 0.000002,
+                'SYN': 10
+            };
+            
+            const cryptoAmount = (amount * rates[cryptoType]).toFixed(6);
+            document.getElementById('cryptoAmount').textContent = `${cryptoAmount} ${cryptoType}`;
+        }
+
+        document.getElementById('cryptoType').addEventListener('change', updateCryptoAmount);
+        document.getElementById('paymentAmount').addEventListener('input', updateCryptoAmount);
+
+        // Connect wallet
+        async function connectWallet() {
+            if (typeof ethers !== 'undefined') {
+                try {
+                    const provider = new ethers.providers.Web3Provider(window.ethereum);
+                    await provider.send("eth_requestAccounts", []);
+                    walletConnected = true;
+                    document.getElementById('walletStatus').textContent = 'Connected';
+                    document.getElementById('walletStatus').className = 'text-sm text-green-400';
+                } catch (error) {
+                    console.error('Wallet connection failed:', error);
+                }
+            }
+        }
+
+        // Process payment
+        async function processPayment() {
+            const termsAccepted = document.getElementById('termsAccepted').checked;
+            if (!termsAccepted) {
+                alert('Please accept the Terms of Service to continue.');
+                return;
+            }
+
+            // Validate based on payment method
+            if (selectedPaymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                
+                if (cardNumber.length !== 16 || expiryDate.length !== 5 || cvv.length < 3) {
+                    alert('Please fill in all card details correctly.');
+                    return;
+                }
+            } else if (selectedPaymentMethod === 'crypto') {
+                if (!walletConnected) {
+                    alert('Please connect your wallet first.');
+                    return;
+                }
+            }
+
+            // Simulate payment processing
+            const button = event.target;
+            button.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+            button.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Generate transaction ID
+                const transactionId = 'TXN-' + Date.now();
+                document.getElementById('transactionId').textContent = transactionId;
+                document.getElementById('paidAmount').textContent = '$' + document.getElementById('paymentAmount').value;
+                
+                // Show success modal
+                document.getElementById('successModal').style.display = 'flex';
+                
+                // Reset button
+                button.innerHTML = '<i class="fas fa-lock mr-2"></i>Process Secure Payment';
+                button.disabled = false;
+            }, 2000);
+        }
+
+        // Close success modal
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+            // Reset form
+            document.getElementById('paymentAmount').value = '100.00';
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('cvv').value = '';
+            document.getElementById('cardholderName').value = '';
+            document.getElementById('billingAddress').value = '';
+            document.getElementById('termsAccepted').checked = false;
+        }
+
+        // Simulate risk assessment
+        function updateRiskScore() {
+            const score = Math.floor(Math.random() * 30) + 10; // Random score between 10-40
+            document.getElementById('riskScore').textContent = `Low (${score}/100)`;
+            document.getElementById('riskBar').style.width = score + '%';
+        }
+
+        // Initialize
+        updateRiskScore();
+        updateCryptoAmount();
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <defs>
+    <!-- Synora Brand Icons -->
+    
+    <!-- Logo Icon -->
+    <symbol id="synora-logo" viewBox="0 0 24 24">
+      <path d="M8 8 Q8 6 10 6 L16 6 Q18 6 18 8 Q18 10 16 10 L12 10 L12 14 L16 14 Q18 14 18 16 Q18 18 16 18 L10 18 Q8 18 8 16 Q8 14 10 14 L12 14 L12 10 L10 10 Q8 10 8 8 Z" fill="currentColor"/>
+      <circle cx="6" cy="20" r="1.5" fill="#10a37f" opacity="0.8"/>
+      <circle cx="18" cy="20" r="1.5" fill="#10a37f" opacity="0.8"/>
+      <circle cx="12" cy="4" r="1.5" fill="#10a37f" opacity="0.8"/>
+    </symbol>
+    
+    <!-- Payment Icons -->
+    <symbol id="payment-card" viewBox="0 0 24 24">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="2"/>
+      <line x1="6" y1="14" x2="10" y2="14" stroke="currentColor" stroke-width="2"/>
+      <line x1="14" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="crypto-eth" viewBox="0 0 24 24">
+      <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 2L12 22M2 12L22 12" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="crypto-btc" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 6V18M8 10H16M8 14H16M10 6V10M14 6V10M10 14V18M14 14V18" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="bank-transfer" viewBox="0 0 24 24">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M6 8H18M6 12H18M6 16H18" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 8V16M8 10L12 8L16 10M8 14L12 16L16 14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <!-- Governance Icons -->
+    <symbol id="governance-vote" viewBox="0 0 24 24">
+      <path d="M12 2L15 9L22 9L17 14L19 21L12 17L5 21L7 14L2 9L9 9L12 2Z" fill="currentColor"/>
+    </symbol>
+    
+    <symbol id="governance-proposal" viewBox="0 0 24 24">
+      <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/>
+      <line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2"/>
+      <line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="treasury" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M21 5C21 6.66 16.97 8 12 8C7.03 8 3 6.66 3 5M21 5C21 3.34 16.97 2 12 2C7.03 2 3 3.34 3 5M21 5V19C21 20.66 16.97 22 12 22C7.03 22 3 20.66 3 19V5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M21 12C21 13.66 16.97 15 12 15C7.03 15 3 13.66 3 12" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <!-- Security Icons -->
+    <symbol id="security-shield" viewBox="0 0 24 24">
+      <path d="M12 2L4 7V12C4 16.5 7 20.5 12 22C17 20.5 20 16.5 20 12V7L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="fraud-detection" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor"/>
+    </symbol>
+    
+    <!-- AI Icons -->
+    <symbol id="ai-brain" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M8 14C8 15.1 8.9 16 10 16C11.1 16 12 15.1 12 14C12 12.9 11.1 12 10 12C8.9 12 8 12.9 8 14ZM12 8C12 9.1 12.9 10 14 10C15.1 10 16 9.1 16 8C16 6.9 15.1 6 14 6C12.9 6 12 6.9 12 8Z" fill="currentColor"/>
+      <path d="M10 12H14M12 10V14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="ai-chat" viewBox="0 0 24 24">
+      <path d="M21 15C21 15.55 20.55 16 20 16H7L3 20V4C3 3.45 3.45 3 4 3H20C20.55 3 21 3.45 21 4V15Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="9" cy="9" r="1" fill="currentColor"/>
+      <circle cx="12" cy="9" r="1" fill="currentColor"/>
+      <circle cx="15" cy="9" r="1" fill="currentColor"/>
+    </symbol>
+    
+    <!-- Analytics Icons -->
+    <symbol id="analytics-chart" viewBox="0 0 24 24">
+      <path d="M3 3V21H21V3H3ZM19 19H5V5H19V19Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M7 17L11 13L15 15L19 11" stroke="currentColor" stroke-width="2"/>
+      <circle cx="7" cy="17" r="1" fill="currentColor"/>
+      <circle cx="11" cy="13" r="1" fill="currentColor"/>
+      <circle cx="15" cy="15" r="1" fill="currentColor"/>
+      <circle cx="19" cy="11" r="1" fill="currentColor"/>
+    </symbol>
+    
+    <symbol id="portfolio" viewBox="0 0 24 24">
+      <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 22V12M2 7L12 12L22 7" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 12L7 9.5M12 12L17 9.5" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <!-- Banking Icons -->
+    <symbol id="banking-lend" viewBox="0 0 24 24">
+      <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 12L7 9.5M12 12L17 9.5M12 12V22" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="8" r="2" fill="currentColor"/>
+    </symbol>
+    
+    <symbol id="banking-borrow" viewBox="0 0 24 24">
+      <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 12L7 14.5M12 12L17 14.5M12 12V22" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="16" r="2" fill="currentColor"/>
+    </symbol>
+    
+    <!-- Utility Icons -->
+    <symbol id="check-success" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"/>
+      <path d="M8 12L11 15L16 10" stroke="currentColor" stroke-width="2" fill="none"/>
+    </symbol>
+    
+    <symbol id="warning-alert" viewBox="0 0 24 24">
+      <path d="M12 2L2 20H22L12 2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+      <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="error-cross" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"/>
+      <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2"/>
+      <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <!-- Status Icons -->
+    <symbol id="status-online" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="12" r="3" fill="currentColor"/>
+    </symbol>
+    
+    <symbol id="status-pending" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+    <symbol id="status-offline" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    
+  </defs>
+</svg>
