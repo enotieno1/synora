@@ -4949,40 +4949,6 @@
                         });
                         
                         // Update URL hash without jumping
-                        history.pushState(null, null, `#${targetId}`);
-                        
-                        // Announce to screen readers
-                        announceToScreenReader(`Navigated to ${targetId} section`);
-                        
-                        // Add focus to the section for accessibility
-                        targetElement.setAttribute('tabindex', '-1');
-                        targetElement.focus();
-                        
-                        // Remove tabindex after blur
-                        targetElement.addEventListener('blur', function() {
-                            targetElement.removeAttribute('tabindex');
-                        }, { once: true });
-                    } else {
-                        console.error('Target element not found:', targetId);
-                        // Show error message to user
-                        alert(`Section "${targetId}" not found. Please check if the section exists.`);
-                        
-                        // Update status with error
-                        if (statusElement) {
-                            statusElement.innerHTML = `❌ Section <strong>${targetId}</strong> not found!`;
-                            statusElement.className = 'mt-4 text-sm text-red-600 text-center font-medium';
-                        }
-                    }
-                });
-            });
-        });
-        
-        // Debug functions for navigation testing
-        function testNavigation() {
-            const debugInfo = document.getElementById('debug-info');
-            let output = '<strong>Navigation Debug Info:</strong><br><br>';
-            
-            // Test anchor links
             const anchorLinks = document.querySelectorAll('a[href^="#"]');
             output += `Found ${anchorLinks.length} anchor links:<br>`;
             anchorLinks.forEach((link, index) => {
